@@ -65,6 +65,16 @@ public class User {
 		this.email = email;
 	}
 	
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return this.password;
+	}
+	
+	public void setPassword(String encryptedPassword) {
+		// TODO Auto-generated method stub
+		this.password = encryptedPassword;
+	}
+	
 	public Roles getRole() {
 		return this.role;
 	}
@@ -78,6 +88,10 @@ public class User {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", role="
 				+ role + "]";
 	}
+
+	
+
+	
 	
 	
 }
