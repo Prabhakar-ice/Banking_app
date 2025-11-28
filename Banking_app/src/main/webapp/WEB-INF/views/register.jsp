@@ -10,11 +10,23 @@
 
 <h2>Welcome</h2>
 
-	<form action="/user/register" method="post" th:object="${user}">
-	   <input type="text" th:field="*{email}">
-	   <input type="password" th:field="*{password}">
-	   <button type="submit">Register</button>
-	</form>
+	<p style="color:red;">${error}</p>
+
+	<form action="/userRegister" method="post">
+    
+    <label>Username:</label>
+    <input type="text" name="username" required />
+
+    <label>Email:</label>
+    <input type="email" name="email" required />
+
+    <label>Password:</label>
+    <input type="password" name="password" required />
+
+    <button type="submit">Register</button>
+
+</form>
+
 	
 
 </body>

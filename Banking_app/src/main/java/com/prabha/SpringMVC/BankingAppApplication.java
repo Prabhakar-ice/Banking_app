@@ -27,7 +27,7 @@ public class BankingAppApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		User admin =userRepo.findByRole(Roles.ADMIN);
+		User admin =userRepo.findByEmail("admin@gmail.com");
 		
 		if(admin ==null) {
 			User user =new User();

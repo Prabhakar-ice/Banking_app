@@ -1,7 +1,6 @@
 package com.prabha.SpringMVC.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +12,7 @@ import com.prabha.SpringMVC.models.User;
 import com.prabha.SpringMVC.services.UserService;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/")
 public class UserController {
 
 	private final UserService userService;
@@ -22,12 +21,28 @@ public class UserController {
 		this.userService = userService;
 	}
 	
+	@GetMapping("/")
+	public String index() {
+		return "index";
+	}
+	
+	
+	@GetMapping("/login")
+	public String showLoginForm() {
+		return "login";
+	}
+
+	@GetMapping("/register")
+	public String showRegisterForm() {
+		return "register";
+	}
+	
 	@GetMapping("/greet")
 	public String greet() {
 		return "Welcome to user Controller";
 	}
 	
-	@PostMapping("/login")
+	@PostMapping("/userLogin")
 	public String userLogin(@RequestParam String email,
 							@RequestParam String password, 
 							RedirectAttributes redirectAttributes) {
@@ -45,21 +60,22 @@ public class UserController {
 	}
 	
 	
-	@PostMapping("/register")
-	public String userRegister(@ModelAttribute("user") User user, Model model) {
+	@PostMapping("/userRegister")
+	public String userRegister(@ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
 		
 		System.out.println(user);
 		
-		String status = userService.register(user);
+		boolean status = userService.register(user);
 		
-		if(!status.equals("success")) {
+		if(!status) {
+			redirectAttributes.addFlashAttribute("error", "User already exists");
 			return "redirect:/register";
 		}
 		
 		return "login";
 	}
 	
-	@GetMapping("/logout")
+	@GetMapping("/userLogout")
 	public String userLogout() {
 		return "index";
 	}

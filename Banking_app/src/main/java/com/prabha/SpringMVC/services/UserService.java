@@ -11,6 +11,7 @@ import com.prabha.SpringMVC.repository.UserRepository;
 public class UserService {
 	
 	private final UserRepository userRepo;
+	
 	private final PasswordEncoder passwordEncoder;
 	
 	
@@ -20,27 +21,29 @@ public class UserService {
 		
 	}
 
-	public String register(User user) {
+	public boolean register(User user) {
 		
 		
 		if(userRepo.existsByEmail(user.getEmail())){
-			return "email exists" ;
+			System.out.println("User Exists");
+			return false;
 		}
 		
 		String encryptedPassword = passwordEncoder.encode(user.getPassword());
 		
 		user.setPassword(encryptedPassword);
 		
-		user.setRole(Roles.USER);
+		user.setRole(Roles.valueOf("USER"));
 		
 		userRepo.save(user);
 		
-		return "success";
+		return true;
 	}
 
 	public boolean validateLogin(String email, String enteredPassword) {
 		User user = userRepo.findByEmail(email);
 		System.out.println(user + " " + "service");
+		
 		if(user == null) {
 			return false;
 		}
