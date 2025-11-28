@@ -14,7 +14,7 @@
     <p style="color:red;">${error}</p>
    
 
-    <form action="user/login" method="post">
+    <form action="/userLogin" method="post">
         <label>Email:</label>
         <input type="text" name="email" required><br><br>
 
