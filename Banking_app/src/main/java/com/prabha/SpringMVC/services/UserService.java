@@ -54,5 +54,10 @@ public class UserService {
 		return true;
 	}
 
+	public User findByEmail(String email) {
+		// TODO Auto-generated method stub
+		return userRepo.findByEmail(email);
+	}
+
 	
 }
