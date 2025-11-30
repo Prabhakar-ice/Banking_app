@@ -1,5 +1,8 @@
 package com.prabha.SpringMVC.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.prabha.SpringMVC.dto.Roles;
 
 import jakarta.persistence.Column;
@@ -9,18 +12,26 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
+@Table(name = "User", 
+		uniqueConstraints = {
+				@UniqueConstraint(name = "user_unique_email", columnNames = "email")
+		})
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	@Column(name = "user_id")
+	private long user_id;
 	
 	@NotBlank(message = "username cannot be empty")
-	@Column(length = 100, nullable = false, unique = true)
+	@Column(length = 100, nullable = false)
 	private String username;
 	
 	@NotBlank(message = "password cannot be empty")
@@ -28,11 +39,15 @@ public class User {
 	private String password;
 	
 	@Email(message= "enter valid email")
-	@Column(length = 150, nullable = false, unique = true)
+	@Column(name = "email",length = 150, nullable = false)
 	private String email;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, name = "Role")
 	private Roles role;
+	
+	@OneToMany(mappedBy = "user") // meaning one user can have many Accounts
+	private List<Account> accounts = new ArrayList<>();
 	
 	public User() {
 		super();
@@ -46,7 +61,7 @@ public class User {
 	}
 
 	public long getId() {
-		return this.id;
+		return this.user_id;
 	}
 	
 	public String getUsername() {
@@ -85,7 +100,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", role="
+		return "User [id=" + user_id + ", username=" + username + ", password=" + password + ", email=" + email + ", role="
 				+ role + "]";
 	}
 

@@ -4,51 +4,65 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<head>
-    <title>Dashboard</title>
+<title>Dashboard</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2f2f2;
-        }
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+    }
 
-        /* Top navigation bar */
-        .navbar {
-            background-color: #222;
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    /* Top navigation bar */
+    .navbar {
+        background-color: #222;
+        color: white;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-        .navbar h2 {
-            margin: 0;
-        }
+    .navbar h2 {
+        margin: 0;
+    }
 
-        /* Buttons on the right */
-        .nav-buttons a {
-            color: white;
-            text-decoration: none;
-            margin-left: 20px;
-            padding: 8px 14px;
-            background-color: #444;
-            border-radius: 4px;
-        }
+    /* Buttons on the right */
+    .nav-buttons a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        padding: 8px 14px;
+        background-color: #444;
+        border-radius: 4px;
+    }
 
-        .nav-buttons a:hover {
-            background-color: #666;
-        }
+    .nav-buttons a:hover {
+        background-color: #666;
+    }
 
-        /* Content section */
-        .content {
-            padding: 20px;
-        }
-    </style>
+    /* Content section */
+    .content {
+        padding: 20px;
+    }
+
+    /* Create Account button */
+    .btn-create {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 18px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .btn-create:hover {
+        background-color: #0056b3;
+    }
+
+</style>
 
 </head>
 <body>
@@ -65,9 +79,22 @@
 
     <!-- Main Dashboard Content -->
     <div class="content">
-        <h3>Welcome to your Dashboard!</h3>
-        <p>This is a simple dashboard page after login.</p>
+    <h3>Welcome to your Dashboard!</h3>
+    <p>This is a simple dashboard page after login.</p>
+
+    <!-- NEW Create Account Button -->
+    <a href="createAccount" class="btn-create">Create New Account</a>
+
+    <!-- Action Buttons -->
+    <div style="margin-top: 25px;">
+        <a href="/deposit" class="btn-create">Deposit</a>
+        <a href="/withdraw" class="btn-create">Withdraw</a>
+        <a href="/transfer" class="btn-create">Transfer</a>
+        <a href="/checkBalance" class="btn-create">Check Balance</a>
     </div>
+</div>
+
 
 </body>
+
 </html>

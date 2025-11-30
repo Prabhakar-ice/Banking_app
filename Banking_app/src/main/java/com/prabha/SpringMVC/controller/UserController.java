@@ -11,6 +11,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.prabha.SpringMVC.models.User;
 import com.prabha.SpringMVC.services.UserService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/")
 public class UserController {
@@ -26,6 +28,10 @@ public class UserController {
 		return "index";
 	}
 	
+	@GetMapping("/dashboard")
+	public String dashboard() {
+		return "dashboard";
+	}
 	
 	@GetMapping("/login")
 	public String showLoginForm() {
@@ -45,9 +51,19 @@ public class UserController {
 	@PostMapping("/userLogin")
 	public String userLogin(@RequestParam String email,
 							@RequestParam String password, 
+							HttpSession session,
 							RedirectAttributes redirectAttributes) {
 		
 		System.out.println(email + password);
+		
+		User user = userService.findByEmail(email);
+		
+		if(user == null) {
+			redirectAttributes.addFlashAttribute("error", "Invalid Email or Password");
+			return "redirect:/login";
+		}
+		
+		session.setAttribute("userId", user.getId());
 		
 		boolean status = userService.validateLogin(email, password);
 		
