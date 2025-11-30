@@ -79,12 +79,21 @@
 
     <!-- Main Dashboard Content -->
     <div class="content">
-        <h3>Welcome to your Dashboard!</h3>
-        <p>This is a simple dashboard page after login.</p>
+    <h3>Welcome to your Dashboard!</h3>
+    <p>This is a simple dashboard page after login.</p>
 
-        <!-- NEW Create Account Button -->
-        <a href="createAccount" class="btn-create">Create New Account</a>
+    <!-- NEW Create Account Button -->
+    <a href="createAccount" class="btn-create">Create New Account</a>
+
+    <!-- Action Buttons -->
+    <div style="margin-top: 25px;">
+        <a href="/deposit" class="btn-create">Deposit</a>
+        <a href="/withdraw" class="btn-create">Withdraw</a>
+        <a href="/transfer" class="btn-create">Transfer</a>
+        <a href="/checkBalance" class="btn-create">Check Balance</a>
     </div>
+</div>
+
 
 </body>
 

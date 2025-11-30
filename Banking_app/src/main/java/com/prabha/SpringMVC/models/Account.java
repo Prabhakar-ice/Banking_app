@@ -17,17 +17,17 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity(name = "Account")
 @Table(name = "Account",
-				uniqueConstraints = {
+				uniqueConstraints = 
 						@UniqueConstraint(name = "Account_no_unique", columnNames = "Account No")
-				})
+				)
 public class Account {
 
 	@Id
 	@Column(name = "Account No", nullable = false, length = 15)
 	private String accountNo;
 	
-	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@ManyToOne // meaning many accounts belongs to one user 
+	@JoinColumn(name = "user_id") 
 	private User user;
 	
 	
@@ -41,6 +41,9 @@ public class Account {
 	
 	private LocalDateTime created_on;
 	
+	public Account() {
+		super();
+	}
 	
 	public Account( AccountType acc_type) {
 		this.accType = acc_type;
@@ -76,7 +79,10 @@ public class Account {
 		this.accType = acc_type;
 	}
 
-
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 	public LocalDateTime getCreated_on() {
 		return created_on;
 	}

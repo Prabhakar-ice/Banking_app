@@ -9,6 +9,8 @@
 <body>
 
     <h2>Create New Account</h2>
+	
+	<p style="color:red;">${error}</p>
 
     <form action="createBankAccount" method="post">
 

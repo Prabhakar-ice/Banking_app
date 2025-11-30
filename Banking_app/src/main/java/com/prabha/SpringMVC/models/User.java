@@ -1,5 +1,8 @@
 package com.prabha.SpringMVC.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.prabha.SpringMVC.dto.Roles;
 
 import jakarta.persistence.Column;
@@ -9,7 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
@@ -43,8 +46,8 @@ public class User {
 	@Column(nullable = false, name = "Role")
 	private Roles role;
 	
-	@OneToOne(mappedBy = "user")
-	private Account account;
+	@OneToMany(mappedBy = "user") // meaning one user can have many Accounts
+	private List<Account> accounts = new ArrayList<>();
 	
 	public User() {
 		super();

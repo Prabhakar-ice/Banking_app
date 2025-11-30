@@ -8,12 +8,15 @@ import org.springframework.stereotype.Service;
 
 import com.prabha.SpringMVC.dto.AccountType;
 import com.prabha.SpringMVC.models.Account;
+import com.prabha.SpringMVC.models.User;
 import com.prabha.SpringMVC.repository.AccountRepo;
+import com.prabha.SpringMVC.repository.UserRepository;
 
 @Service
 public class AccountService {
 
 	private AccountRepo accountRepo;
+	private UserRepository userRepo;
 	
 	private final Map<AccountType, String> accountTypeCode =
             Map.of(AccountType.SAVINGS, "0201",
@@ -24,10 +27,10 @@ public class AccountService {
 					"Ashok Nagar", "9963",
 					"Uthangarai", "9965");
 	
-	private static long seven_digit_code = 1000000l;
 	
-	public AccountService(AccountRepo accountRepo) {
+	public AccountService(AccountRepo accountRepo, UserRepository userRepo) {
 		this.accountRepo = accountRepo;
+		this.userRepo = userRepo;
 	}
 
 	public boolean withdrawMoney(BigDecimal amount_to_withdraw, String account_selected) {
@@ -60,35 +63,41 @@ public class AccountService {
 		return accountRepo.findByUserId(userId);
 	}
 
-	public boolean createNewBankAccount(AccountType acc_type, BigDecimal initial_deposit, String branch_name) {
+	public boolean createNewBankAccount(String acc_type, BigDecimal initial_deposit, String branch_name, Long userId) {
 		
-//		accountRepo.findByAccountType()
+		User user = userRepo.findById(userId).orElse(null);
 		
-		Account current_account = new Account(acc_type);
+		Account new_account = new Account(AccountType.valueOf(acc_type));
 		String account_no = generateAccountNumber(acc_type, branch_name);
 		
-		current_account.setAccount_no(account_no);
-		current_account.setBalance(initial_deposit);
-		current_account.setCreated_on();
+		new_account.setUser(user);
+		new_account.setAccount_no(account_no);
+		new_account.setBalance(initial_deposit);
+		new_account.setCreated_on();
 		
+		accountRepo.save(new_account);
 		
-		
-		return false;
+		return true; 
 	}
 	
-	private String generateAccountNumber(AccountType acc_type, String branch_name) {
+	private String generateAccountNumber(String acc_type, String branch_name) {
 		
 		String branch_code= branchCode.get(branch_name);
-		String acc_type_code = accountTypeCode.get(acc_type);
+		String acc_type_code = accountTypeCode.get(AccountType.valueOf(acc_type));
 		
-		String account_number = branch_code + acc_type + ++seven_digit_code;
+		String timeStamp_number =String.valueOf(System.currentTimeMillis()).substring(6) ;
 		
-		System.out.println(account_number + "  acc Service");
+		System.out.println(timeStamp_number + "  acc service");
 		
-		return account_number;
+		System.out.println(branch_code + acc_type_code + timeStamp_number + "  acc Service");
+		
+		return branch_code + acc_type_code + timeStamp_number;
 	}
 	
-	
+	public int countAccountsByUser(Long userId) {
+	    return accountRepo.countByUserId(userId);
+	}
+
 	
 	
 }

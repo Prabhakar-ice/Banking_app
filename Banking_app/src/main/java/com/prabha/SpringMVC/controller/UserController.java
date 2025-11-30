@@ -28,6 +28,10 @@ public class UserController {
 		return "index";
 	}
 	
+	@GetMapping("/dashboard")
+	public String dashboard() {
+		return "dashboard";
+	}
 	
 	@GetMapping("/login")
 	public String showLoginForm() {

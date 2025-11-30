@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.prabha.SpringMVC.dto.AccountType;
 import com.prabha.SpringMVC.models.Account;
 import com.prabha.SpringMVC.services.AccountService;
 
@@ -26,40 +26,76 @@ public class AccountController {
 		this.accountService = accountService;
 	}
 	
+	
 	@GetMapping("/createAccount")
 	public String createNewAccount() {
+		
 		return "createAccount";
 	}
 	
+
+	@PostMapping("/createBankAccount")
+	public String createBankAccount(@RequestParam(name= "account_type") String acc_type,
+									@RequestParam(name = "initial_deposit") BigDecimal initial_deposit,
+									@RequestParam String branch_name, HttpSession session, RedirectAttributes redirectAttributes) {
+		System.out.println(acc_type + "  " + initial_deposit + "  acc controller");
+		
+		if((Long)session.getAttribute("userId") == null) {
+					
+			redirectAttributes.addFlashAttribute("error", "Session Time Out Please Login again");
+			
+			return "redirect:/login";
+		}
+		
+		Long userId = (Long)session.getAttribute("userId");
+		
+		if(accountService.countAccountsByUser(userId) > 5) {
+			redirectAttributes.addFlashAttribute("error", "You cannot create account, You have reach the limit");
+			return "redirect:/createAccount";
+		}
+		
+		boolean status = accountService.createNewBankAccount(acc_type, initial_deposit, branch_name, userId);
+		
+		if(!status) {
+			redirectAttributes.addFlashAttribute("error", "Account creation failed. Try again.");
+	        return "redirect:/createAccount";
+		}
+		
+		return "accountCreated";
+	}
+	
+	
 	@GetMapping("/withdraw")
-	public String withdraw(HttpSession session, Model model) {
+	public String withdraw(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+		
 		System.out.println("redirecd jsp");
 		
-		long userId = (long)session.getAttribute("userId");
+		
+		if((Long)session.getAttribute("userId") == null) {
+			
+			redirectAttributes.addFlashAttribute("error", "Session Time Out Please Login again");
+			
+			return "redirect:/login";
+		}
+		
+		Long userId = (Long)session.getAttribute("userId");
 		
 		System.out.println(userId + "  withdraw UserId");
 		
 		List<Account> accounts = accountService.findByUserId(userId);
 		
-		model.addAttribute("account", accounts);
+		System.out.println(accounts);
+		
+		model.addAttribute("accounts", accounts);
 		
 		return "withdraw";
 	}
 	
-	@PostMapping("/createBankAccount")
-	public String createBankAccount(@RequestParam(name= "account_type") AccountType acc_type,
-									@RequestParam(name = "initial_deposit") BigDecimal initial_deposit,
-									@RequestParam String branch_name) {
-		System.out.println(acc_type + "  " + initial_deposit + "  acc controller");
-		
-		boolean status = accountService.createNewBankAccount(acc_type, initial_deposit, branch_name);
-		
-		return "dashboard";
-	}
 	
 	@PostMapping("/withdraw")
 	public String withdraw_money(@RequestParam BigDecimal amount_to_withdraw,
 							@RequestParam String account_selected) {
+		
 		boolean status = accountService.withdrawMoney(amount_to_withdraw, account_selected);
 		
 		System.out.println(amount_to_withdraw + " " + account_selected + "  Controller ");
@@ -68,6 +104,6 @@ public class AccountController {
 			System.out.println("low balance");
 		}
 		
-		return "success";
+		return "withdrawSuccess";
 	}
 }
